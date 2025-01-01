@@ -14,7 +14,7 @@ def driver():
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config):
-    # Ensure the screenshots folder exists
+    
     screenshots_dir = os.path.join(os.getcwd(), "screenshots")
     if not os.path.exists(screenshots_dir):
         os.makedirs(screenshots_dir)
@@ -25,14 +25,14 @@ def test_verify_cart(driver):
     driver.find_element(By.ID, "password").send_keys("secret_sauce")
     driver.find_element(By.ID, "login-button").click()
     
-    # Add first 4 products to the cart
+    
     product_buttons = driver.find_elements(By.CLASS_NAME, "btn_inventory")
     for i in range(4):
         product_buttons[i].click()
     
     driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
     
-    # Fetch product details in the cart
+   
     cart_items = driver.find_elements(By.CLASS_NAME, "cart_item")
     assert len(cart_items) == 4, "Cart does not contain 4 products"
     for item in cart_items:
@@ -47,7 +47,7 @@ def test_checkout_process(driver, request):
     driver.find_element(By.ID, "password").send_keys("secret_sauce")
     driver.find_element(By.ID, "login-button").click()
     
-    # Add first 4 products to the cart
+   
     product_buttons = driver.find_elements(By.CLASS_NAME, "btn_inventory")
     for i in range(4):
         product_buttons[i].click()
@@ -59,17 +59,17 @@ def test_checkout_process(driver, request):
     driver.find_element(By.ID, "postal-code").send_keys("12345")
     driver.find_element(By.ID, "continue").click()
     
-    # Take screenshot of the checkout overview
+    
     screenshot_path = os.path.join(screenshots_dir, "checkout_overview.png")
     driver.save_screenshot(screenshot_path)
     print(f"Screenshot saved at: {screenshot_path}")
     
-    # Attach the screenshot to pytest-html report
+    
     if hasattr(request.node, "add_report_section"):
         with open(screenshot_path, "rb") as image_file:
             request.node.add_report_section("call", "image", f"Checkout screenshot: {screenshot_path}")
     
-    # Verify products in checkout overview
+    
     cart_items = driver.find_elements(By.CLASS_NAME, "cart_item")
     assert len(cart_items) == 4, "Checkout does not contain 4 products"
     for item in cart_items:
@@ -77,7 +77,7 @@ def test_checkout_process(driver, request):
         product_price = item.find_element(By.CLASS_NAME, "inventory_item_price").text
         print(f"Product Name: {product_name}, Price: {product_price}")
     
-    # Finish checkout
+   
     driver.find_element(By.ID, "finish").click()
     confirmation_message = driver.find_element(By.CLASS_NAME, "complete-header").text
     assert confirmation_message.lower() == "thank you for your order!".lower(), "Checkout not completed successfully"
