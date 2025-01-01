@@ -45,7 +45,7 @@ def test_automation_workflow():
         
         cart_items = driver.find_elements(By.CLASS_NAME, "cart_item")
         assert len(cart_items) == 4, f"Expected 4 items in the cart, but found {len(cart_items)}."
-        print("automation workflow tested")
+        print("add random products verification test")
 
        
         driver.find_element(By.ID, "react-burger-menu-btn").click()
