@@ -23,3 +23,4 @@ def test_logout(driver):
 
     # Validate redirection to the login page
     assert driver.current_url == "https://www.saucedemo.com/", "Logout failed or URL mismatch."
+    print("logout testing completed successfully.")

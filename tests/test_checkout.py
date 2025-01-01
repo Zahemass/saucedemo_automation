@@ -12,6 +12,13 @@ def driver():
     yield driver
     driver.quit()
 
+@pytest.hookimpl(tryfirst=True)
+def pytest_configure(config):
+    # Ensure the screenshots folder exists
+    screenshots_dir = os.path.join(os.getcwd(), "screenshots")
+    if not os.path.exists(screenshots_dir):
+        os.makedirs(screenshots_dir)
+
 def test_verify_cart(driver):
     driver.get("https://www.saucedemo.com/")
     driver.find_element(By.ID, "user-name").send_keys("standard_user")
@@ -33,12 +40,8 @@ def test_verify_cart(driver):
         product_price = item.find_element(By.CLASS_NAME, "inventory_item_price").text
         print(f"Product Name: {product_name}, Price: {product_price}")
 
-def test_checkout_process(driver):
-    # Ensure the screenshots folder exists
+def test_checkout_process(driver, request):
     screenshots_dir = os.path.join(os.getcwd(), "screenshots")
-    if not os.path.exists(screenshots_dir):
-        os.makedirs(screenshots_dir)
-
     driver.get("https://www.saucedemo.com/")
     driver.find_element(By.ID, "user-name").send_keys("standard_user")
     driver.find_element(By.ID, "password").send_keys("secret_sauce")
@@ -60,6 +63,11 @@ def test_checkout_process(driver):
     screenshot_path = os.path.join(screenshots_dir, "checkout_overview.png")
     driver.save_screenshot(screenshot_path)
     print(f"Screenshot saved at: {screenshot_path}")
+    
+    # Attach the screenshot to pytest-html report
+    if hasattr(request.node, "add_report_section"):
+        with open(screenshot_path, "rb") as image_file:
+            request.node.add_report_section("call", "image", f"Checkout screenshot: {screenshot_path}")
     
     # Verify products in checkout overview
     cart_items = driver.find_elements(By.CLASS_NAME, "cart_item")

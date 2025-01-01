@@ -6,6 +6,7 @@ def test_cart_button_visibility(driver):
 
     cart_button = driver.find_element("id", "shopping_cart_container")
     assert cart_button.is_displayed(), "Cart button is not visible."
+    print("Button Visibility is completed")
   
 def test_add_multiple_items_to_cart(driver):
     # Step 1: Navigate to the website
@@ -23,4 +24,5 @@ def test_add_multiple_items_to_cart(driver):
     # Step 4: Verify the cart badge shows "2"
     cart_badge = driver.find_element("class name", "shopping_cart_badge")
     assert cart_badge.text == "2", "Failed to add multiple items to the cart."
+    print("Multiple product adding test completed")
     

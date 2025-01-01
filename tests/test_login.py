@@ -20,3 +20,4 @@ def test_login_standard_user(driver):
     login_page = LoginPage(driver)
     login_page.login("standard_user", "secret_sauce")
     assert "inventory" in driver.current_url
+    print("login testing completed successfully.")
