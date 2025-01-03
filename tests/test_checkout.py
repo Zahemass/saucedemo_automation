@@ -81,4 +81,4 @@ def test_checkout_process(driver, request):
     driver.find_element(By.ID, "finish").click()
     confirmation_message = driver.find_element(By.CLASS_NAME, "complete-header").text
     assert confirmation_message.lower() == "thank you for your order!".lower(), "Checkout not completed successfully"
-    print("Test Case 8: Checkout completed successfully.")
+    print("Test Case 8: Screenshot captured.")
